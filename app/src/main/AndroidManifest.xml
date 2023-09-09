@@ -10,11 +10,18 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.BookBox"
+        android:theme="@style/Base.Theme.BookBox"
         tools:targetApi="31">
         <activity
+            android:name=".BookAdd"
+            android:exported="false"
+            android:label="@string/title_activity_book_add"
+            android:theme="@style/Base.Theme.BookBox" />
+        <activity
             android:name=".MainActivity"
-            android:exported="true">
+            android:exported="true"
+            android:theme="@style/Base.Theme.BookBox"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

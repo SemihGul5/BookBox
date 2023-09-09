@@ -1,9 +1,18 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.BookBox" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="Base.Theme.BookBox" parent="Theme.AppCompat.Light">
         <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="colorPrimary">@color/appBar</item>
+        <item name="titleTextColor">@color/white</item>
+        <item name="colorOnBackground">@color/appBar</item>
     </style>
 
-    <style name="Theme.BookBox" parent="Base.Theme.BookBox" />
+
+    <style name="Base.Theme.BookBox_Add" parent="Theme.AppCompat.Light">
+        <!-- Customize your light theme here. -->
+        <item name="colorPrimary">@color/appBar</item>
+        <item name="titleTextColor">@color/white</item>
+        <item name="colorOnBackground">@color/appBar</item>
+    </style>
 </resources>
+
