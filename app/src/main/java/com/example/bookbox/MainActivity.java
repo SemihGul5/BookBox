@@ -2,6 +2,7 @@ package com.example.bookbox;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
@@ -27,6 +28,11 @@ public class MainActivity extends AppCompatActivity {
         View view=binding.getRoot();
         setContentView(view);
         setTitle("Kitaplarım");
+        binding.recyclerView.setHasFixedSize(true);
+        binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+
+
 
 
         binding.fab.setOnClickListener(new View.OnClickListener() {
@@ -37,6 +43,10 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
+
+    }
+    private void shopPopup(View view){
 
 
     }
