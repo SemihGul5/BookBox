@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<GridLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -10,7 +11,7 @@
     android:layout_marginTop="50dp"
     android:padding="60dp"
     tools:context=".BookAdd">
-
+    >
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
@@ -134,14 +135,25 @@
         android:inputType="text" />
 
     <Button
-        android:id="@+id/button2"
-        android:layout_width="194dp"
+        android:id="@+id/buttonDelete"
+        android:layout_width="140dp"
         android:layout_height="wrap_content"
         android:layout_row="7"
         android:layout_column="1"
         android:backgroundTint="@color/button"
-        android:onClick="save"
-        android:text="Kaydet"
+        android:onClick="delete"
+        android:text="Sil"
+        android:textAlignment="center"
+        android:textColor="@color/white" />
+    <Button
+        android:id="@+id/buttonUpdate"
+        android:layout_width="140dp"
+        android:layout_height="wrap_content"
+        android:layout_row="7"
+        android:layout_column="0"
+        android:backgroundTint="@color/button"
+        android:onClick="update"
+        android:text="Güncelle"
         android:textAlignment="center"
         android:textColor="@color/white" />
 
@@ -154,12 +166,13 @@
         android:ems="10"
         android:inputType="date" />
 
-    <Spinner
-        android:id="@+id/spinner"
-        android:layout_width="match_parent"
-        android:layout_height="35dp"
-        android:layout_row="3"
-        android:layout_column="1" />
-
+    <EditText
+    android:id="@+id/spinnerText"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_row="3"
+    android:layout_column="1"
+    android:ems="10"
+    android:inputType="date" />
 
 </GridLayout>
