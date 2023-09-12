@@ -5,25 +5,23 @@ import android.graphics.BitmapFactory;
 
 public class Book {
     private int id;
-    private int image;
+    private byte[] image;
     private String name;
+    private String writer;
+    private String category;
+    private String date;
+    private String publisher;
     private String descrp;
-    private byte[] bytes;
 
-    public Book(int id, int image, String name, String descrp,byte[]bytes) {
+    public Book(int id, byte[] image, String name, String writer, String category, String date, String publisher, String descrp) {
         this.id = id;
         this.image = image;
         this.name = name;
+        this.writer = writer;
+        this.category = category;
+        this.date = date;
+        this.publisher = publisher;
         this.descrp = descrp;
-        this.bytes=bytes;
-    }
-
-    public byte[] getBytes() {
-        return bytes;
-    }
-
-    public void setBytes(byte[] bytes) {
-        this.bytes = bytes;
     }
 
     public int getId() {
@@ -34,11 +32,11 @@ public class Book {
         this.id = id;
     }
 
-    public int getImage() {
+    public byte[] getImage() {
         return image;
     }
 
-    public void setImage(int image) {
+    public void setImage(byte[] image) {
         this.image = image;
     }
 
@@ -50,6 +48,37 @@ public class Book {
         this.name = name;
     }
 
+    public String getWriter() {
+        return writer;
+    }
+
+    public void setWriter(String writer) {
+        this.writer = writer;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public String getPublisher() {
+        return publisher;
+    }
+
+    public void setPublisher(String publisher) {
+        this.publisher = publisher;
+    }
 
     public String getDescrp() {
         return descrp;
@@ -58,6 +87,4 @@ public class Book {
     public void setDescrp(String descrp) {
         this.descrp = descrp;
     }
-
-
 }

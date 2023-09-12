@@ -1,5 +1,7 @@
 package com.example.bookbox;
 
+import static com.example.bookbox.DbHelper.TABLENAME;
+
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
@@ -8,18 +10,21 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 import android.graphics.Bitmap;
 import android.graphics.ImageDecoder;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.bookbox.databinding.ActivityBookAddBinding;
@@ -36,6 +41,7 @@ public class BookAdd extends AppCompatActivity {
     ActivityResultLauncher<String> permissionLauncher;
     Bitmap selectedImage;
     SQLiteDatabase database;
+    DbHelper dbHelper;
     ArrayList<String> category;
     ArrayList<Book> bookList;
 
@@ -45,6 +51,8 @@ public class BookAdd extends AppCompatActivity {
         binding= ActivityBookAddBinding.inflate(getLayoutInflater());
         View view=binding.getRoot();
         setContentView(view);
+
+        dbHelper = new DbHelper(this);
         registerLauncher();
 
         category= new ArrayList<>();
@@ -69,9 +77,12 @@ public class BookAdd extends AppCompatActivity {
         category.add("Din ve Mitoloji");
         category.add("Hobi ve El Sanatları");
 
+
+
         ArrayAdapter<String> stringArrayAdapter=new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item,category);
         binding.spinner.setAdapter(stringArrayAdapter);
         bookList= new ArrayList<>();
+        save();
     }
 
 
@@ -125,40 +136,52 @@ public class BookAdd extends AppCompatActivity {
         });
     }
 
-    private void save(View view){
+    private void save(){
+        binding.button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    ContentValues contentValues= new ContentValues();
+                    contentValues.put("name",binding.bookNameText.getText().toString());
+                    contentValues.put("image",imageViewToByte(binding.imageView2));
+                    contentValues.put("writer",binding.writerNameText.getText().toString());
+                    contentValues.put("category",binding.spinner.getSelectedItem().toString());
+                    contentValues.put("date",binding.dateText.getText().toString());
+                    contentValues.put("publisher",binding.publisherText.getText().toString());
+                    contentValues.put("description",binding.descriptionText.getText().toString());
 
-        String name= binding.bookNameText.getText().toString();
-        String writer= binding.writerNameText.getText().toString();
-        String category= binding.spinner.getSelectedItem().toString();
-        String date= binding.editTextDate2.getText().toString();
-        String publisher=binding.publisherText.getText().toString();
-        String description= binding.descriptionText.getText().toString();
+                    database = dbHelper.getWritableDatabase();
+                    long result = database.insert(TABLENAME, null, contentValues);
 
-        Bitmap bitmap= makeSmallerImage(selectedImage,120);
-        ByteArrayOutputStream byteArrayOutputStream= new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG,100,byteArrayOutputStream);
-        byte[] bytes= byteArrayOutputStream.toByteArray();
+                    if (result != -1) {
+                        Toast.makeText(BookAdd.this, "Kayıt Başarılı", Toast.LENGTH_SHORT).show();
 
+                        Intent intent= new Intent(BookAdd.this, MainActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(BookAdd.this, "Kayıt Başarısız", Toast.LENGTH_SHORT).show();
+                    }
 
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                    Toast.makeText(BookAdd.this,"Bir hata oluştu",Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
-        try {
-            database=openOrCreateDatabase("Book",MODE_PRIVATE,null);
-            database.execSQL("CREATE TABLE IF NOT EXISTS book(id INTEGER PRIMARY KEY,name VARCHAR, writer VARCHAR, category VARCHAR, date VARCHAR, publisher VARCHAR, description VARCHAR, image BLOB)");
-            String sql="INSERT INTO book(name,writer,category,date,publisher,description,image) VALUES (?,?,?,?,?,?,?)";
-            SQLiteStatement sqLiteStatement= database.compileStatement(sql);
-            sqLiteStatement.bindString(1,name);
-            sqLiteStatement.bindString(2,writer);
-            sqLiteStatement.bindString(3,category);
-            sqLiteStatement.bindString(4,date);
-            sqLiteStatement.bindString(5,publisher);
-            sqLiteStatement.bindString(6,description);
-            sqLiteStatement.bindBlob(7,bytes);
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-            Toast.makeText(BookAdd.this,"Bir hata oluştu",Toast.LENGTH_SHORT).show();
-        }
+    }
+
+    // resmi byte dizisine çeviren bir fonksiyon.
+    // veritabanına byte olarak kaydetmemizi sağlıyacak
+    private byte[] imageViewToByte(ImageView imageView){
+        Bitmap bitmap= ((BitmapDrawable)imageView.getDrawable()).getBitmap();
+        ByteArrayOutputStream stream= new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG,50,stream);
+        byte[] bytes= stream.toByteArray();
+        return  bytes;
     }
 
 
